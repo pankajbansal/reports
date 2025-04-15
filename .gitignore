@@ -1,0 +1,42 @@
+# Laravel & PHP related
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+.env
+.phpunit.result.cache
+
+# Laravel cache and logs
+/storage/app/public
+/storage/framework/cache
+/storage/framework/sessions
+/storage/framework/views
+/storage/logs
+
+# Composer & NPM dependencies
+composer.lock
+package-lock.json
+
+# IDE & OS files
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+
+# User-specific files
+*.sublime-workspace
+*.sublime-project
+
+# Ignoring Laravel Mix artifacts (optional)
+public/hot
+public/mix-manifest.json
+
+# Docker-specific (if using Docker)
+docker-compose.override.yml
+
+# PHPUnit specific
+.phpunit.cache
+
+# Laravel Telescope (if using)
+storage/telescope
+
