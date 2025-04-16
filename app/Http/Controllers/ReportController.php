@@ -5,7 +5,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Barryvdh\DomPDF\Facade as Pdf;
+// use Barryvdh\DomPDF\Facades\Pdf as Pdf;
 
 use Illuminate\Http\Request;
 
@@ -24,7 +24,7 @@ class ReportController extends Controller
             ];
             
             // Load the view and generate the PDF
-            $pdf = Pdf::loadView('reports.weekly', $data);
+            $pdf = \PDF::loadView('reports.weekly', $data);
 
             // Save the PDF to the storage path
             $filePath = storage_path('app/reports/' . $user->id . '-weekly-report.pdf');

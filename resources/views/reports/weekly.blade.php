@@ -12,7 +12,7 @@
     <h3>Activity Summary</h3>
     <ul>
         @foreach ($activity as $act)
-            <li>{{ $act->activity_name }}: {{ $act->description }}</li>
+            <li>{{ $act->created_at }} : {{ $act->activity_name }}: {{ $act->description }}</li>
         @endforeach
     </ul>
 </body>
