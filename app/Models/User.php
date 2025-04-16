@@ -20,7 +20,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
+        'status',
     ];
 
     /**
@@ -44,4 +46,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function userActivities()
+    {
+        return $this->hasMany(UserActivity::class);
+    }
+
 }
