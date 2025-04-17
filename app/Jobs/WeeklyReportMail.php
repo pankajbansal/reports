@@ -1,7 +1,5 @@
 <?php
 
-// app/Jobs/GenerateWeeklyReport.php
-
 namespace App\Jobs;
 
 use App\Models\User;
@@ -10,18 +8,30 @@ use App\Models\UserReport;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\WeeklyReport;
 
-class GenerateWeeklyReport implements ShouldQueue{
-    use Dispatchable, Queueable;
+class WeeklyReportMail implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $user;
 
-    public function __construct(User $user){
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(User $user)
+    {
         $this->user = $user;
     }
 
-    public function handle(){
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
+    {
         $filePath = $this->generateReport($this->user);
         
         // Save the generated report to the database
@@ -33,6 +43,9 @@ class GenerateWeeklyReport implements ShouldQueue{
 
         // Send email with the report or generate download link
         $this->sendReport($this->user, $filePath);
+        
+        // Send mail using your WeeklyReport mailable
+        // Mail::to($this->user->email)->send(new WeeklyReport($this->user));
     }
 
     private function generateReport(User $user){
@@ -49,7 +62,6 @@ class GenerateWeeklyReport implements ShouldQueue{
     }
 
     private function sendReport(User $user, $filePath){
-        Mail::to($user->email)->send(new WeeklyReportMail($filePath));
+        Mail::to($user->email)->send(new WeeklyReport($filePath));
     }
-
 }

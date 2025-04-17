@@ -5,7 +5,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-// use Barryvdh\DomPDF\Facades\Pdf as Pdf;
+
+use App\Jobs\GenerateWeeklyReport;
 
 use Illuminate\Http\Request;
 
@@ -35,5 +36,13 @@ class ReportController extends Controller
         }
 
         return response()->json(['message' => 'User not found.'], 404);
+    }
+
+    public function testQueue($userId)
+    {
+        $user = User::find($userId);
+        GenerateWeeklyReport::dispatch($user);
+
+        return response()->json(['message' => 'Job dispatched successfully!']);
     }
 }

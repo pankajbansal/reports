@@ -1,21 +1,29 @@
 <?php
 
-// app/Console/Commands/SendWeeklyReports.php
-
 namespace App\Console\Commands;
 
-use App\Models\User;
-use App\Jobs\GenerateWeeklyReport;
 use Illuminate\Console\Command;
+use App\Models\User;
+use App\Jobs\WeeklyReportMail;
+
 
 class SendWeeklyReports extends Command
 {
     protected $signature = 'reports:send-weekly';
 
+    protected $description = 'Send weekly reports to users';
+
     public function handle()
     {
-        User::where('status', 'active')->each(function (User $user) {
-            GenerateWeeklyReport::dispatch($user);
-        });
+        $activeUsers = User::where('status', 'active')->get();
+        foreach($activeUsers as $user){
+            if ($user) {
+                WeeklyReportMail::dispatch($user);
+                $this->info('Weekly report dispatched!');
+            } else {
+                $this->error('User not found.');
+            }
+        }
+        
     }
 }
