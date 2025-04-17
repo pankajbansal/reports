@@ -23,13 +23,14 @@
             <th>Date</th>
             <th>Activity</th>
             <th>Description</th>
+            <th>IP Address</th>
         </tr>
         @foreach ($activity as $act)
             <?php
                 $date = new DateTime($act->created_at);
                 $formattedTime = $date->format('d M y h:i A');
             ?>
-            <tr><td>{{ $formattedTime }}</td> <td>{{ $act->activity_name }} </td> <td> {{ $act->description }}</td></tr>
+            <tr><td>{{ $formattedTime }}</td> <td>{{ $act->activity_name }} </td> <td> {{ $act->description }}</td><td> {{ $act->ip_address }}</td></tr>
         @endforeach
     </table>
 </body>

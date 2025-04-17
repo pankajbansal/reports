@@ -13,6 +13,10 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WeeklyReport;
 
+use Spatie\Activitylog\Models\Activity;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Facades\LogActivity;
+
 class WeeklyReportMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -62,6 +66,7 @@ class WeeklyReportMail implements ShouldQueue
     }
 
     private function sendReport(User $user, $filePath){
+        activity()->log( $user->email . ' Weekly Report Sent');
         Mail::to($user->email)->send(new WeeklyReport($filePath));
     }
 }

@@ -14,7 +14,6 @@
 /storage/logs
 
 # Composer & NPM dependencies
-composer.lock
 package-lock.json
 
 # IDE & OS files

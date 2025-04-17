@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+use Spatie\Activitylog\Models\Activity;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Facades\LogActivity;
+
 class UserController extends Controller
 {
     // Handle user login
@@ -18,9 +22,11 @@ class UserController extends Controller
         // dd($credentials);
         if (Auth::attempt($credentials)) {
             // Log the activity
-            $this->logUserActivity(Auth::user()->id, 'login', 'User logged in successfully.');
+            $this->logUserActivity(Auth::user()->id, 'Login', 'User logged in successfully.');
 
+            activity()->log( Auth::user()->email . ' User logged in.');
             return response()->json(['message' => 'Login successful'], 200);
+            
         }
 
         return response()->json(['message' => 'Invalid credentials'], 401);
@@ -34,6 +40,7 @@ class UserController extends Controller
 
         // Log the activity
         $this->logUserActivity($userId, 'logout', 'User logged out successfully.');
+        activity()->log( Auth::user()->email . ' User logged out.');
 
         return response()->json(['message' => 'Logged out successfully'], 200);
     }
@@ -63,9 +70,9 @@ class UserController extends Controller
         }
 
         $user->save();
-
+        activity()->log( Auth::user()->email . ' User Profile Updated.');
         // Log the activity
-        $this->logUserActivity($user->id, 'Updated Profile', 'User updated their profile.');
+        $this->logUserActivity($user->id, 'Profile Update', 'User updated their profile.');
 
         return response()->json(['message' => 'Profile updated successfully'], 200);
     }
